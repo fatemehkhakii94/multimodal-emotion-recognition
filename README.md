@@ -81,6 +81,8 @@ tensorboard --logdir logs/
 
 > **UAR** (Unweighted Average Recall) is the standard metric in Speech Emotion Recognition literature — it weights all classes equally regardless of support size.
 
+![Model comparison across all five experiments — Accuracy, UAR, F1-Weighted, F1-Macro](results/plots/modality_comparison.png)
+
 ### Multimodal Gain Over Unimodal Baselines
 
 | Comparison | F1-W Gain | UAR Gain |
@@ -96,6 +98,8 @@ tensorboard --logdir logs/
 | 0.759 | 0.595 | 0.681 | 0.840 | 0.701 | 0.579 |
 
 Happy and Angry are easiest to recognize. Disgust and Sad are most confused — both are low-energy and acoustically similar to Neutral.
+
+![Normalized confusion matrix — cross-modal fusion. ANG and HAP are cleanest; DIS and SAD show the most off-diagonal spread, frequently confused with each other and with NEU.](results/plots/confusion_matrices/confusion_matrix_cross_modal.png)
 
 ## Reproducible Experiments
 
@@ -161,6 +165,8 @@ This system evaluates acted, lab-recorded speech-video clips under controlled co
 - ~30 minutes training time for all five experiments (cached features)
 - ~110M total parameters (HuBERT 90M + EfficientNet-B3 12M + fusion 5M)
 
+![Training curves — cross-modal fusion. Val F1-Weighted and UAR rise steeply in the first 10 epochs and stabilize around 0.68–0.70, with early stopping triggering at epoch 24.](results/plots/training_curves/training_curves_cross_modal.png)
+
 ## Project Structure
 
 ```
@@ -220,6 +226,8 @@ multimodal-emotion-recognition/
 **Audio dominates visual on acted speech.** Audio-only (F1=0.618) substantially outperforms visual-only (F1=0.476) on CREMA-D. CREMA-D actors produce highly expressive vocal performances, while facial expressions in 4-second clips can be ambiguous.
 
 **Cross-modal attention is the best fusion strategy.** Bidirectional attention allows each modality to query contextually relevant information from the other, producing richer joint representations than simple concatenation or logit averaging. Late fusion is a close second (+1.3% F1 over early).
+
+![t-SNE of fused embeddings — cross-modal fusion. HAP forms the tightest, most isolated cluster (right); ANG separates cleanly at the bottom. DIS, FEA, SAD, and NEU overlap in the central region, consistent with their lower per-class F1 scores.](results/plots/tsne/tsne_Fused_Embeddings___cross_modal.png)
 
 **Feature pre-caching makes the project practical.** Running HuBERT and EfficientNet on every training step would take 150+ hours on an RTX 3060. Pre-extracting features once reduces total training time for all five experiments to ~30 minutes — a 50× speedup with no loss in model quality.
 
