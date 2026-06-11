@@ -158,15 +158,6 @@ The **classification head** applies LayerNorm → Linear(512→256) → GELU →
 
 This system evaluates acted, lab-recorded speech-video clips under controlled conditions. In-the-wild emotion recognition, spontaneous speech, occluded faces, non-English speakers, and emotions outside the six CREMA-D categories are not addressed. HuBERT and EfficientNet backbone weights are frozen during fusion training; end-to-end fine-tuning is not explored.
 
-## Tested Hardware Target
-
-- NVIDIA GeForce RTX 3060, 12 GB VRAM
-- Python 3.12, PyTorch 2.6, CUDA 11.8
-- ~30 minutes training time for all five experiments (cached features)
-- ~110M total parameters (HuBERT 90M + EfficientNet-B3 12M + fusion 5M)
-
-![Training curves — cross-modal fusion. Val F1-Weighted and UAR rise steeply in the first 10 epochs and stabilize around 0.68–0.70, with early stopping triggering at epoch 24.](results/plots/training_curves/training_curves_cross_modal.png)
-
 ## Project Structure
 
 ```
