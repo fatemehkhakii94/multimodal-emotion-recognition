@@ -1,0 +1,112 @@
+# ─────────────────────────────────────────────
+# Project Configuration
+# ─────────────────────────────────────────────
+
+project:
+  name: "multimodal-emotion-recognition"
+  seed: 42
+
+# ─────────────────────────────────────────────
+# Dataset
+# ─────────────────────────────────────────────
+data:
+  dataset: "CREMAD"
+  raw_dir: "data/raw/CREMAD"
+  processed_dir: "data/processed"
+  splits_dir: "data/splits"
+  emotions: ["ANG", "DIS", "FEA", "HAP", "NEU", "SAD"]
+  emotion_map:
+    ANG: 0
+    DIS: 1
+    FEA: 2
+    HAP: 3
+    NEU: 4
+    SAD: 5
+  train_ratio: 0.70
+  val_ratio:   0.15
+  test_ratio:  0.15
+
+# ─────────────────────────────────────────────
+# Visual Branch
+# ─────────────────────────────────────────────
+visual:
+  num_frames: 8
+  image_size: 224
+  efficientnet_variant: "efficientnet_b3"
+  pretrained: true
+  visual_feature_dim: 1536       # EfficientNet-B3 output dim
+  temporal_embed_dim: 256
+  temporal_num_heads: 8
+  temporal_num_layers: 4
+  temporal_dropout: 0.1
+  output_dim: 256
+
+# ─────────────────────────────────────────────
+# Audio Branch
+# ─────────────────────────────────────────────
+audio:
+  model_name: "facebook/hubert-base-ls960"
+  sample_rate: 16000
+  max_duration_sec: 6.0          # clips longer than this get truncated
+  hubert_output_dim: 768
+  projection_dim: 256
+  output_dim: 256
+
+# ─────────────────────────────────────────────
+# Fusion
+# ─────────────────────────────────────────────
+fusion:
+  strategies: ["early", "late", "cross_modal"]
+  input_dim: 512                 # audio_dim + visual_dim = 256 + 256
+  hidden_dim: 256
+  num_heads: 8
+  dropout: 0.3
+
+# ─────────────────────────────────────────────
+# Classification Head
+# ─────────────────────────────────────────────
+classifier:
+  num_classes: 6
+  hidden_dim: 256
+  dropout: 0.3
+
+# ─────────────────────────────────────────────
+# Training
+# ─────────────────────────────────────────────
+training:
+  batch_size: 8
+  num_epochs: 50
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-2
+  label_smoothing: 0.1
+  scheduler: "cosine"            # cosine annealing
+  warmup_epochs: 5
+  grad_clip: 1.0
+  early_stopping_patience: 10
+  num_workers: 4
+  mixed_precision: true          # fp16 training
+
+# ─────────────────────────────────────────────
+# Evaluation
+# ─────────────────────────────────────────────
+evaluation:
+  metrics: ["accuracy", "uar", "weighted_f1", "macro_f1"]
+  save_confusion_matrix: true
+  save_tsne: true
+  save_per_class_f1: true
+
+# ─────────────────────────────────────────────
+# Paths
+# ─────────────────────────────────────────────
+paths:
+  checkpoints: "checkpoints"
+  logs: "logs"
+  results: "results"
+
+# ─────────────────────────────────────────────
+# Demo (Real-time)
+# ─────────────────────────────────────────────
+demo:
+  camera_id: 0
+  audio_duration_sec: 3.0
+  confidence_threshold: 0.4

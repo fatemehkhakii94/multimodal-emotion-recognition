@@ -1,0 +1,85 @@
+# ─────────────────────────────────────────────
+# Data — too large for GitHub (4-5 GB raw, ~8 GB processed)
+# ─────────────────────────────────────────────
+data/raw/
+data/processed/audio/
+data/processed/frames/
+data/processed/features/
+
+# Keep split CSVs and summary (small, useful for reproducibility)
+# data/splits/  ← NOT ignored
+
+# ─────────────────────────────────────────────
+# Model checkpoints — too large
+# ─────────────────────────────────────────────
+checkpoints/
+
+# ─────────────────────────────────────────────
+# Logs — TensorBoard events
+# ─────────────────────────────────────────────
+logs/
+nohup.out
+
+# ─────────────────────────────────────────────
+# Results — keep CSVs and plots (portfolio evidence)
+# Ignore nothing in results/ — all plots + CSVs stay in repo
+# ─────────────────────────────────────────────
+
+# ─────────────────────────────────────────────
+# Python
+# ─────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# ─────────────────────────────────────────────
+# Environments
+# ─────────────────────────────────────────────
+.env
+.venv
+env/
+venv/
+ENV/
+.conda/
+
+# ─────────────────────────────────────────────
+# Jupyter
+# ─────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ─────────────────────────────────────────────
+# HuggingFace cache (no need to track)
+# ─────────────────────────────────────────────
+.cache/
+
+# ─────────────────────────────────────────────
+# IDE
+# ─────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ─────────────────────────────────────────────
+# Temp / one-time scripts
+# ─────────────────────────────────────────────
+test_model.py
+setup_structure.py
